@@ -11,6 +11,7 @@
       <v-layout row>
         <v-flex xs12 md4 pa-2>
           <v-text-field
+          autocomplete="new-name"
           label="Nome:"
           v-model="name"
           placeholder="Qual o seu nome?"
@@ -29,6 +30,7 @@
       </v-flex>
         <v-flex xs12 md3 pa-2>
           <v-text-field
+          autocomplete="new-email"
           label="E-mail:"
           v-model="email"
           :disabled="disableEmail"
@@ -58,6 +60,7 @@
         </v-flex>
         <v-flex xs12 md4 pa-2>
          <v-autocomplete
+              autocomplete="new-city"
 							v-model="citySelected"
 							:items="cities"
 							hide-no-data
@@ -66,7 +69,6 @@
               placeholder="Cidade"
 							item-text="city"
 							item-value="id"
-              auto-complete="off"
 						>
 							<template v-slot:selection="data">
 									{{ data.item.city }} - {{ data.item.state }}
