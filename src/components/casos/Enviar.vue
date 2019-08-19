@@ -11,6 +11,7 @@
       <v-layout row>
         <v-flex xs12 md4 pa-2>
           <v-text-field
+          :rules="nameRules"
           autocomplete="new-name"
           label="Nome:"
           v-model="name"
@@ -21,6 +22,7 @@
   
         <v-flex xs12 md3 pa-2>
           <v-text-field
+          :rules="telefoneRules"
           label="Celular:"
           v-model="phone"
           placeholder="Qual o seu celular?"
@@ -30,6 +32,7 @@
       </v-flex>
         <v-flex xs12 md3 pa-2>
           <v-text-field
+          :rules="emailRules"
           autocomplete="new-email"
           label="E-mail:"
           v-model="email"
@@ -89,10 +92,14 @@
 							</template>
 						</v-autocomplete>
         </v-flex>
-        <v-flex pa-2 xs12 md4>
+        <v-flex xs12 md4 pa-2>
           <v-select
-            :items="comoSoubeItens"
-            v-model="comoSoubeSelecionado"
+            :rules="partnersRules"
+            :items="partners"
+            hide-no-data
+						return-object
+            item-text="name"
+            v-model="partnersSelected"
             label="Como nos conheceu?"
           ></v-select>
         </v-flex>
@@ -112,7 +119,7 @@
           <v-btn
             block
             color="green"
-            @click="sendDiligence"
+            @click="sendCase"
           >
             <span class="font-weight-bold white--text">Enviar</span>
           </v-btn>
@@ -141,11 +148,14 @@ export default {
       citySelected: '',
       actuations: [],
       actuationsSelected: '',
-      comoSoubeItens: [
-        'Teste',
-        'Teste2'
-      ],
-      comoSoubeSelecionado: ''
+      partners: [],
+      partnersSelected: '',
+        nameRules: [
+        v => !!v || 'Informe o seu nome por favor' ],
+        telefoneRules: [
+        v => !!v || 'Informe o seu telefone por favor' ],
+        emailRules: [
+        v => !!v || 'Informe o seu E-mail por favor' ],
     }
   },
   watch: {
@@ -170,7 +180,13 @@ export default {
         .then(res => this.cities = res.data)
         .then( () => this.$store.commit('setVueLoad', false) )
     },
-    sendDiligence() {
+    getPartners() {
+      axios.get(this.$store.getters.api + '/api/v1/partners')
+      .then(res => this.partners = res.data)
+      .catch(() => console.log('erro:', 'erro'))
+    },
+    sendCase() {
+    if(this.message === ''){this.$store.dispatch('snackbar_warning', 'É necessário escrever uma mensagem')} else {
       this.$store.commit('setVueLoad', true)
       const data = {
         name: this.name,
@@ -181,6 +197,7 @@ export default {
         city_id: this.citySelected.id,
         //comoSoube: this.comoSoubeSelecionado
       }
+    }
 
       axios.post(`${this.$store.getters.api}/api/v1/legal-cases`, data)
         .then(() => {
@@ -193,6 +210,7 @@ export default {
   created() {
     // pega os serviços e as cidades ao iniciar o componente para carregá-los nos selects
     this.getActuations()
+    this.getPartners()
     this.getCities()
   }
 }

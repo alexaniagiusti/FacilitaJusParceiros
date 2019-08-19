@@ -11,6 +11,7 @@
       <v-layout row>
         <v-flex xs12 md4 pa-2>
           <v-text-field
+          :rules="nameRules"
           autocomplete="new-name"
           label="Nome:"
           v-model="name"
@@ -21,6 +22,8 @@
         </v-flex>
         <v-flex xs12 md3 pa-2>
           <v-text-field
+          :rules="telefoneRules"
+          v-mask="masktelefone"
           label="Celular:"
           v-model="phone"
           placeholder="Qual o seu celular?"
@@ -30,6 +33,7 @@
         </v-flex>
         <v-flex xs12 md3 pa-2>
           <v-text-field
+          :rules="emailRules"
           autocomplete="new-email"
           label="E-mail:"
           v-model="email"
@@ -45,6 +49,7 @@
       <v-layout row>
         <v-flex xs12 md3 pa-2>
           <v-autocomplete
+          :rules="serviceRules"
           label="Serviço:"
           :items="services"
           v-model="serviceSelected"
@@ -57,6 +62,7 @@
         </v-flex>
         <v-flex xs12 md3 pa-2>
          <v-autocomplete
+              :rules="cityRules"
               autocomplete="new-city"
 							v-model="citySelected"
 							:items="cities"
@@ -106,6 +112,7 @@
         </v-flex>
           <v-flex xs12 md3 pa-2>
           <v-select
+            :rules="partnersRules"
             :items="partners"
             hide-no-data
 						return-object
@@ -148,10 +155,15 @@ import axios from 'axios'
 import moment from 'moment'
 import 'moment/locale/pt-br'
 import { error } from 'util';
+import { mask } from 'vue-the-mask'
 
 export default {
+  directives: {
+    mask
+  },
   data() {
     return {
+      masktelefone: '(##) # #### ####',
       name: '',
       phone: '',
       email: '',
@@ -166,7 +178,17 @@ export default {
       services: [],
       serviceSelected: '',
       partners: [],
-      partnersSelected: ''
+      partnersSelected: '',
+      nameRules: [
+        v => !!v || 'Informe o seu nome por favor' ],
+        telefoneRules: [
+        v => !!v || 'Informe o seu telefone por favor' ],
+        emailRules: [
+        v => !!v || 'Informe o seu e-mail por favor' ],
+        cityRules: [
+        v => !!v || 'Selecione uma cidade favor' ],
+        serviceRules: [
+        v => !!v || 'Selecione um serviço por favor' ],
     }
   },
   watch: {
@@ -196,7 +218,9 @@ export default {
       .then(res => this.partners = res.data)
       .catch(() => console.log('erro:', 'erro'))
     },
+
     sendDiligence() {
+    if(this.message === ''){this.$store.dispatch('snackbar_warning', 'É necessário escrever uma mensagem')} else {
       this.$store.commit('setVueLoad', true)
       const data = {
         name: this.name,
@@ -209,6 +233,7 @@ export default {
         time: this.hour,
         date: this.dateFormat,
         //comoSoube: this.comoSoubeSelecionado
+        }
       }
 
       axios.post(`${this.$store.getters.api}/api/v1/diligences`, data)
