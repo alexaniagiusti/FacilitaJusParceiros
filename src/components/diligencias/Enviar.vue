@@ -201,12 +201,14 @@ export default {
       this.dataDiligence.partner_id = this.partnersSelected.id
       this.dataDiligence.city_id = this.citySelected.id
       this.dataDiligence.time = this.hour
+      this.dataDiligence.date = this.dateFormat
 
       console.log(this.dataDiligence)
 
 
       axios.post(`${this.$store.getters.api}/api/v1/diligence`, this.dataDiligence)
-        .then(() => {
+        .then((res) => {
+          console.log(res.data)
           this.$store.commit('setVueLoad', false)
           this.$store.dispatch('snackbar_success', 'Diligência enviada com sucesso')
         })
