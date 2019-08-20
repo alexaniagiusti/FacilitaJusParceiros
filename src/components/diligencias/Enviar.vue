@@ -2,120 +2,101 @@
   <v-container fluid>
     <div class="linhaSemQuebra">
       <v-toolbar>
-        <span class="font-weight-light title">
-          Envie sua diligência:
-        </span>
+        <span class="font-weight-light title">Envie sua diligência:</span>
       </v-toolbar>
     </div>
     <v-card class="pa-3">
       <v-layout row>
         <v-flex xs12 md4 pa-2>
           <v-text-field
-          :rules="nameRules"
-          autocomplete="new-name"
-          label="Nome:"
-          v-model="name"
-          placeholder="Qual o seu nome?"
-          >
-
-          </v-text-field>
+            :rules="nameRules"
+            autocomplete="new-name"
+            label="Nome:"
+            v-model="dataDiligence.name"
+            placeholder="Qual o seu nome?"
+          ></v-text-field>
         </v-flex>
         <v-flex xs12 md3 pa-2>
           <v-text-field
-          :rules="telefoneRules"
-          v-mask="masktelefone"
-          label="Celular:"
-          v-model="phone"
-          placeholder="Qual o seu celular?"
-          >
-
-          </v-text-field>
+            :rules="telefoneRules"
+            v-mask="masktelefone"
+            label="Celular:"
+            v-model="dataDiligence.phone"
+            placeholder="Qual o seu celular?"
+          ></v-text-field>
         </v-flex>
         <v-flex xs12 md3 pa-2>
           <v-text-field
-          :rules="emailRules"
-          autocomplete="new-email"
-          label="E-mail:"
-          v-model="email"
-          :disabled="disableEmail"
-          placeholder="Qual o seu e-mail?"
-          >
-          </v-text-field>
+            :rules="emailRules"
+            autocomplete="new-email"
+            label="E-mail:"
+            v-model="dataDiligence.email"
+            :disabled="disableEmail"
+            placeholder="Qual o seu e-mail?"
+          ></v-text-field>
         </v-flex>
         <v-flex xs12 md2>
-          <v-checkbox v-model="semEmail" label="Não tenho E-mail" ></v-checkbox>
+          <v-checkbox v-model="semEmail" label="Não tenho E-mail"></v-checkbox>
         </v-flex>
       </v-layout>
       <v-layout row>
         <v-flex xs12 md3 pa-2>
           <v-autocomplete
-          :rules="serviceRules"
-          label="Serviço:"
-          :items="services"
-          v-model="serviceSelected"
-          item-value="id"
-          item-text="service"
-          hide-no-data
-          placeholder="Serviço que deseja solicitar"
+            :rules="serviceRules"
+            label="Serviço:"
+            :items="services"
+            v-model="serviceSelected"
+            item-value="id"
+            item-text="service"
+            hide-no-data
+            placeholder="Serviço que deseja solicitar"
           />
-
         </v-flex>
         <v-flex xs12 md3 pa-2>
-         <v-autocomplete
-              :rules="cityRules"
-              autocomplete="new-city"
-							v-model="citySelected"
-							:items="cities"
-							hide-no-data
-							return-object
-							label="Cidade"
-              placeholder="Cidade"
-							item-text="city"
-							item-value="id"
-						>
-							<template v-slot:selection="data">
-									{{ data.item.city }} - {{ data.item.state }}
-							</template>
-							<template v-slot:item="data">
-								<template v-if="typeof data.item !== 'object'">
-									<v-list-item-content v-text="data.item.city"></v-list-item-content>
-								</template>
-								<template v-else>
-									<v-list-item-avatar class="elevation-1">
-										<v-icon>place</v-icon>
-									</v-list-item-avatar>
-									<v-list-item-content>
-										<v-list-item-title v-html="data.item.city"></v-list-item-title>
-										<v-list-item-subtitle v-html="data.item.state"></v-list-item-subtitle>
-									</v-list-item-content>
-								</template>
-							</template>
-						</v-autocomplete>
+          <v-autocomplete
+            :rules="cityRules"
+            autocomplete="new-city"
+            v-model="citySelected"
+            :items="cities"
+            hide-no-data
+            return-object
+            label="Cidade"
+            placeholder="Cidade"
+            item-text="city"
+            item-value="id"
+          >
+            <template v-slot:selection="data">{{ data.item.city }} - {{ data.item.state }}</template>
+            <template v-slot:item="data">
+              <template v-if="typeof data.item !== 'object'">
+                <v-list-item-content v-text="data.item.city"></v-list-item-content>
+              </template>
+              <template v-else>
+                <v-list-item-avatar class="elevation-1">
+                  <v-icon>place</v-icon>
+                </v-list-item-avatar>
+                <v-list-item-content>
+                  <v-list-item-title v-html="data.item.city"></v-list-item-title>
+                  <v-list-item-subtitle v-html="data.item.state"></v-list-item-subtitle>
+                </v-list-item-content>
+              </template>
+            </template>
+          </v-autocomplete>
         </v-flex>
         <v-flex xs12 md2 pa-2>
-          <v-text-field
-          label="Data:"
-          v-model="date"
-          placeholder="Em que dia:"
-          >
-
-          </v-text-field>
+          <v-text-field label="Data:" v-model="dataDiligence.date" placeholder="Em que dia:"></v-text-field>
         </v-flex>
         <v-flex xs12 md1 pa-2>
           <v-text-field
-          label="Horário:"
-          v-model="hour"
-          placeholder="Em qual horário?"
-          >
-
-          </v-text-field>
+            label="Horário:"
+            v-model="hour"
+            placeholder="Em qual horário?"
+          ></v-text-field>
         </v-flex>
-          <v-flex xs12 md3 pa-2>
+        <v-flex xs12 md3 pa-2>
           <v-select
-            :rules="partnersRules"
             :items="partners"
             hide-no-data
-						return-object
+            return-object
             item-text="name"
             v-model="partnersSelected"
             label="Como nos conheceu?"
@@ -125,24 +106,14 @@
       <v-layout row>
         <v-flex xs12 md12 pa-2>
           <v-textarea
-            v-model="message"
+            v-model="dataDiligence.message"
             label="Fale um pouco mais sobre sua diligência:"
-          >
-
-          </v-textarea>
+          ></v-textarea>
         </v-flex>
 
         <v-flex xs12 md12 pa-2>
-          <v-btn
-            block
-            color="green"
-            @click="sendDiligence"
-          >
-           <span
-            class="font-weight-bold white--text"
-           >
-              Enviar
-           </span>
+          <v-btn block color="green" @click="sendDiligence">
+            <span class="font-weight-bold white--text">Enviar</span>
           </v-btn>
         </v-flex>
       </v-layout>
@@ -163,22 +134,24 @@ export default {
   },
   data() {
     return {
+      dataDiligence: {
+        name: '',
+        phone: '',
+        email: '',
+        date: '',
+        message: '',
+      },
+      hour: '',
       masktelefone: '(##) # #### ####',
-      name: '',
-      phone: '',
-      email: '',
+      citySelected: '',
+      serviceSelected: '',
+      partnersSelected: '',
       semEmail: false,
       disableEmail: false,
-      date: '',
       dateFormat: '',
-      hour: '',
-      message: '',
       cities: [],
-      citySelected: '',
       services: [],
-      serviceSelected: '',
       partners: [],
-      partnersSelected: '',
       nameRules: [
         v => !!v || 'Informe o seu nome por favor' ],
         telefoneRules: [
@@ -194,10 +167,10 @@ export default {
   watch: {
     semEmail() {
       if(this.semEmail) {
-        this.email = "teste@gmail.com"
+        this.dataDiligence.email = "teste@gmail.com"
         this.disableEmail = true
       } else {
-        this.email = ""
+        this.dataDiligence.email = ""
         this.disableEmail = false
       }
     }
@@ -218,25 +191,21 @@ export default {
       .then(res => this.partners = res.data)
       .catch(() => console.log('erro:', 'erro'))
     },
+    semEmailTeste() {
+      if(this.email == '' && this.email == false) {
+        this.email = "teste@gmail.com"
+      }
+    },
 
     sendDiligence() {
-    if(this.message === ''){this.$store.dispatch('snackbar_warning', 'É necessário escrever uma mensagem')} else {
-      this.$store.commit('setVueLoad', true)
-      const data = {
-        name: this.name,
-        phone: this.phone,
-        email: this.email,
-        message: this.semEmail ? '(Entrar em contao exclusicamente por telefone) ' + this.message : this.message,
-        service_id: this.serviceSelected,
-        city_id: this.citySelected.id,
-        partner_id: this.partnersSelected.id,
-        time: this.hour,
-        date: this.dateFormat,
-        //comoSoube: this.comoSoubeSelecionado
-        }
-      }
+      this.dataDiligence.partner_id = this.partnersSelected.id
+      this.dataDiligence.city_id = this.citySelected.id
+      this.dataDiligence.time = this.hour
 
-      axios.post(`${this.$store.getters.api}/api/v1/diligences`, data)
+      console.log(this.dataDiligence)
+
+
+      axios.post(`${this.$store.getters.api}/api/v1/diligence`, this.dataDiligence)
         .then(() => {
           this.$store.commit('setVueLoad', false)
           this.$store.dispatch('snackbar_success', 'Diligência enviada com sucesso')
@@ -245,7 +214,7 @@ export default {
     }
   },
   created() {
-    this.date = moment().format('DD[/]MM[/]YYYY')
+    this.dataDiligence.date = moment().format('DD[/]MM[/]YYYY')
     this.dateFormat = moment().format('YYYY[-]MM[-]DD')
     this.hour = moment().format('HH:mm')
     // pega os serviços e as cidades ao iniciar o componente para carregá-los nos selects
