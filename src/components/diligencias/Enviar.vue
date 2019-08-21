@@ -6,7 +6,8 @@
       </v-toolbar>
     </div>
     <v-card class="pa-3">
-      <v-layout row>
+      <v-form ref="formDiligencia">
+        <v-layout row>
         <v-flex xs12 md4 pa-2>
           <v-text-field
             :rules="nameRules"
@@ -42,6 +43,7 @@
       <v-layout row>
         <v-flex xs12 md3 pa-2>
           <v-autocomplete
+            autocomplete="new-service"
             :rules="serviceRules"
             label="Serviço:"
             :items="services"
@@ -95,6 +97,7 @@
         <v-flex xs12 md3 pa-2>
           <v-select
             :items="partners"
+            :rules="partner"
             hide-no-data
             return-object
             item-text="name"
@@ -106,6 +109,7 @@
       <v-layout row>
         <v-flex xs12 md12 pa-2>
           <v-textarea
+            :rules="mensagem"
             v-model="dataDiligence.message"
             label="Fale um pouco mais sobre sua diligência:"
           ></v-textarea>
@@ -117,6 +121,7 @@
           </v-btn>
         </v-flex>
       </v-layout>
+      </v-form>
     </v-card>
   </v-container>
 </template>
@@ -162,6 +167,10 @@ export default {
         v => !!v || 'Selecione uma cidade favor' ],
         serviceRules: [
         v => !!v || 'Selecione um serviço por favor' ],
+        partner: [
+        v => !!v || 'Informe o parceiro' ],
+        mensagem: [
+        v => !!v || 'Escreva uma mensagem' ],
     }
   },
   watch: {
@@ -198,21 +207,23 @@ export default {
     },
 
     sendDiligence() {
-      this.dataDiligence.partner_id = this.partnersSelected.id
-      this.dataDiligence.city_id = this.citySelected.id
-      this.dataDiligence.time = this.hour
-      this.dataDiligence.date = this.dateFormat
-
-      console.log(this.dataDiligence)
-
-
-      axios.post(`${this.$store.getters.api}/api/v1/diligence`, this.dataDiligence)
-        .then((res) => {
-          console.log(res.data)
-          this.$store.commit('setVueLoad', false)
-          this.$store.dispatch('snackbar_success', 'Diligência enviada com sucesso')
-        })
-        .catch(() => this.$$store.dispatch('snackbar_error', 'Erro, tente novamente'))
+      if (this.$refs.formDiligencia.validate()) {
+        this.$store.commit('setVueLoad', true)
+        this.dataDiligence.partner_id = this.partnersSelected.id
+        this.dataDiligence.service_id = this.serviceSelected
+        this.dataDiligence.city_id = this.citySelected.id
+        this.dataDiligence.time = this.hour
+        this.dataDiligence.date = this.dateFormat
+  
+        axios.post(`${this.$store.getters.api}/api/v1/diligence`, this.dataDiligence)
+          .then((res) => {
+            this.$store.commit('setVueLoad', false)
+            this.$store.dispatch('snackbar_success', 'Diligência enviada com sucesso')
+          })
+          .catch(() => this.$$store.dispatch('snackbar_error', 'Erro, tente novamente'))
+      } else {
+          this.$$store.dispatch('snackbar_warning', 'Erro, Preencha todos os dados')
+        }
     }
   },
   created() {
