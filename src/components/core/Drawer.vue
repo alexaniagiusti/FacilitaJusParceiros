@@ -5,7 +5,7 @@
 				<v-icon color="white" size="20">menu</v-icon>
 			</v-btn>
 			<v-spacer></v-spacer>
-			<v-icon color="white">account_circle</v-icon>
+			<!-- <v-icon color="white">account_circle</v-icon> -->
 		<!--	<span class="white--text ml-3 mr-5"> {{ nome }} </span>  -->
 		</v-app-bar>
 		<v-navigation-drawer v-model="drawer" width="250" class="grey lighten-4" app>
@@ -18,23 +18,7 @@
 				</div>
 			<!--	<h3 class="animated delay-1s fadeIn font-weight-light black--text">{{ nome }}</h3> -->
 
-				<v-avatar style="bottom: -28px" color="white" v-if="masculino" size="70">
-					<v-img style="border: 6px solid #fff"
-						src="https://firebasestorage.googleapis.com/v0/b/centraldeoportunidades-de3a9.appspot.com/o/avatar.png?alt=media&token=51d40592-131a-4f3c-939c-b08fc1613842">
-					</v-img>
-				</v-avatar>
-
-				<v-avatar style="bottom: -28px" v-if="feminino" color="white" size="70">
-					<v-img style="border: 1px solid #E0E0E0"
-						src="https://firebasestorage.googleapis.com/v0/b/centraldeoportunidades-de3a9.appspot.com/o/avatar2.png?alt=media&token=850d414f-4b73-4fe9-b63b-e79c8c01ac2f">
-					</v-img>
-				</v-avatar>
-
-				<v-avatar style="bottom: -28px" v-if="semSexo" size="70">
-					<v-img style="border: 6px solid #fff"
-						src="https://firebasestorage.googleapis.com/v0/b/moneycareinvestment-01.appspot.com/o/cartoon-avatar.jpeg?alt=media&token=77a0ead3-2eff-41f0-a450-746368eac5e3">
-					</v-img>
-				</v-avatar>
+	
 			</div>
 			<!-- Grupo com informações do perfil do usuário -->
 			<v-list class="pa-0 mt-0">
@@ -44,18 +28,18 @@
 
 				<v-list-item @click="$router.push({'name': 'enviarDiligencia'})">
 					<v-icon class="mr-5">
-						archive
+						work
 					</v-icon>
 					<v-list-item-content>
-						<v-list-item-title class="ml-3">Enviar Diligência</v-list-item-title>
+						<v-list-item-title class="ml-3">Solicitar Serviço</v-list-item-title>
 					</v-list-item-content>
 				</v-list-item>
 				<v-list-item @click="$router.push({'name': 'enviarCasoJuridico'})">
 					<v-icon class="mr-5">
-						archive
+						gavel
 					</v-icon>
 					<v-list-item-content>
-						<v-list-item-title class="ml-3">Enviar Caso Jurídico</v-list-item-title>
+						<v-list-item-title class="ml-3">Enviar Dúvida</v-list-item-title>
 					</v-list-item-content>
 				</v-list-item>
 

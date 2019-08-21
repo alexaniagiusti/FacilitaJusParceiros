@@ -176,7 +176,7 @@ export default {
   watch: {
     semEmail() {
       if(this.semEmail) {
-        this.dataDiligence.email = "teste@gmail.com"
+        this.dataDiligence.email = "diligencias@facilitajus.com"
         this.disableEmail = true
       } else {
         this.dataDiligence.email = ""
